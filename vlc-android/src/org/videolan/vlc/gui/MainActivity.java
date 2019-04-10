@@ -36,7 +36,6 @@ import com.google.android.material.navigation.NavigationView;
 import org.videolan.libvlc.util.AndroidUtil;
 import org.videolan.medialibrary.Medialibrary;
 import org.videolan.vlc.BuildConfig;
-import org.videolan.vlc.MediaParsingService;
 import org.videolan.vlc.MediaParsingServiceKt;
 import org.videolan.vlc.R;
 import org.videolan.vlc.StartActivity;
@@ -50,7 +49,6 @@ import org.videolan.vlc.gui.browser.BaseBrowserFragment;
 import org.videolan.vlc.gui.browser.ExtensionBrowser;
 import org.videolan.vlc.gui.helpers.Navigator;
 import org.videolan.vlc.gui.helpers.UiTools;
-import org.videolan.vlc.gui.onboarding.OnboardingActivityKt;
 import org.videolan.vlc.gui.preferences.PreferencesActivity;
 import org.videolan.vlc.gui.preferences.PreferencesFragment;
 import org.videolan.vlc.gui.video.VideoGridFragment;
@@ -61,7 +59,6 @@ import org.videolan.vlc.media.MediaUtils;
 import org.videolan.vlc.util.Constants;
 import org.videolan.vlc.util.Permissions;
 import org.videolan.vlc.util.Util;
-import org.videolan.vlc.util.WorkersKt;
 
 import java.util.List;
 
@@ -106,7 +103,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
                  * the info dialog. If (for any reason) the dialog is not shown,
                  * open the menu after a short delay.
                  */
-                mActivityHandler.postDelayed(new Runnable() {
+                getActivityHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mDrawerLayout.openDrawer(mNavigationView);
@@ -153,7 +150,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
         super.onStart();
         if (mMediaLibrary.isInitiated()) {
             /* Load media items from database and storage */
-            if (mScanNeeded && Permissions.canReadStorage(this)) MediaParsingServiceKt.reload(this);
+            if (mScanNeeded && Permissions.canReadStorage(this)) MediaParsingServiceKt.reloadLibrary(this);
         }
         if (BuildConfig.DEBUG) createExtensionServiceConnection();
     }
@@ -263,7 +260,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
         }
 
         /* Close playlist search if open or Slide down the audio player if it is shown entirely. */
-        if (isAudioPlayerReady() && (mAudioPlayer.backPressed() || slideDownAudioPlayer()))
+        if (isAudioPlayerReady() && (getAudioPlayer().backPressed() || slideDownAudioPlayer()))
             return;
 
         // If it's the directory view, a "backpressed" action shows a parent.
@@ -291,7 +288,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
     @Nullable
     @Override
     public ActionMode startSupportActionMode(@NonNull ActionMode.Callback callback) {
-        mAppBarLayout.setExpanded(true);
+        getAppBarLayout().setExpanded(true);
         return super.startSupportActionMode(callback);
     }
 
@@ -344,7 +341,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
         if (requestCode == Constants.ACTIVITY_RESULT_PREFERENCES) {
             switch (resultCode) {
                 case PreferencesActivity.RESULT_RESCAN:
-                    MediaParsingServiceKt.reload(this);
+                    MediaParsingServiceKt.reloadLibrary(this);
                     break;
                 case PreferencesActivity.RESULT_RESTART:
                 case PreferencesActivity.RESULT_RESTART_APP:
@@ -379,7 +376,7 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
                 (Build.MANUFACTURER.compareTo("LGE") == 0)) {
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-            mToolbar.getMenu().findItem(R.id.ml_menu_filter).expandActionView();
+            getToolbar().getMenu().findItem(R.id.ml_menu_filter).expandActionView();
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -404,7 +401,6 @@ public class MainActivity extends ContentActivity implements ExtensionManagerSer
 
     public void updateCheckedItem(int id) {
         switch (id) {
-            case R.id.nav_mrl:
             case R.id.nav_settings:
             case R.id.nav_about:
                 return;

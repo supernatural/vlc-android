@@ -69,9 +69,11 @@ public:
     medialibrary::Query<medialibrary::IMedia> searchFromGenre( int64_t genreId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IAlbum> searchAlbumsFromGenre( int64_t genreId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> searchFromPLaylist( int64_t playlistId, const std::string& query, const medialibrary::QueryParameters* params = nullptr );
+    medialibrary::Query<medialibrary::IMedia> searchFromFolder( int64_t folderId, const std::string& query, medialibrary::IMedia::Type type, const medialibrary::QueryParameters* params = nullptr );
     medialibrary::MediaPtr media(long id);
     medialibrary::MediaPtr media(const std::string& mrl);
     medialibrary::MediaPtr addMedia(const std::string& mrl);
+    bool removeExternalMedia(long id);
     medialibrary::MediaPtr addStream(const std::string& mrl, const std::string& title);
     medialibrary::Query<medialibrary::IMedia> videoFiles( const medialibrary::QueryParameters* params = nullptr );
     medialibrary::Query<medialibrary::IMedia> audioFiles( const medialibrary::QueryParameters* params = nullptr );
@@ -98,8 +100,8 @@ public:
     //PLaylists
     bool playlistAppend(int64_t playlistId, int64_t mediaId);
     bool playlistAdd(int64_t playlistId, int64_t mediaId, unsigned int position);
-    bool playlistMove(int64_t playlistId, int64_t mediaId, unsigned int position);
-    bool playlistRemove(int64_t playlistId, int64_t mediaId);
+    bool playlistMove(int64_t playlistId, unsigned int oldPosition, unsigned int newPosition);
+    bool playlistRemove(int64_t playlistId, unsigned int position);
     bool PlaylistDelete( int64_t playlistId );
 
     void requestThumbnail( int64_t media_id );

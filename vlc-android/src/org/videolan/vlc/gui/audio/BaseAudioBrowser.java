@@ -31,6 +31,7 @@ import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.jetbrains.annotations.NotNull;
 import org.videolan.medialibrary.media.MediaLibraryItem;
 import org.videolan.medialibrary.media.MediaWrapper;
 import org.videolan.vlc.R;
@@ -255,6 +256,15 @@ public abstract class BaseAudioBrowser extends MediaBrowserFragment<MLPagedModel
     }
 
     @Override
+    public void onImageClick(@NotNull View v, int position, @NotNull MediaLibraryItem item) {
+        if (mActionMode != null) {
+            onClick(v, position, item);
+            return;
+        }
+        onLongClick(v, position, item);
+    }
+
+    @Override
     public void onCtxClick(@NonNull View anchor, final int position, @NonNull MediaLibraryItem item) {
         final int flags;
         switch (item.getItemType()) {
@@ -269,6 +279,7 @@ public abstract class BaseAudioBrowser extends MediaBrowserFragment<MLPagedModel
         }
         if (mActionMode == null) ContextSheetKt.showContext(requireActivity(), this, position, item.getTitle(), flags);
     }
+
 
     @Override
     public void onUpdateFinished(RecyclerView.Adapter adapter) {

@@ -508,7 +508,7 @@
     <string name="directory_show_medialib">Show in MediaLib</string>
     <string name="directory_hide_medialib">Hide from MediaLib</string>
     <string name="playlist_save">Save Playlist</string>
-    <string name="playlist_name_hint">playlist name</string>
+    <string name="playlist_name_hint">Playlist name</string>
     <string name="go_to_chapter">Go to chapter…</string>
     <string name="chapter">Chapter</string>
     <string name="resume_from_position">Resume from last position</string>
@@ -637,6 +637,8 @@
     <string name="audio_digital_title">Digital audio output (passthrough)</string>
     <string name="audio_task_cleared_title">Stop on application swipe</string>
     <string name="audio_task_cleared_summary">Stop playback when application is dismissed</string>
+    <string name="audio_resume_card_title">Load last playlist card</string>
+    <string name="audio_resume_card_summary">Shows a card helping you to resume audio playback on app start</string>
     <string name="playback_rewind">Rewind</string>
     <string name="playback_forward">Fast forward</string>
     <string name="ml_wizard_title">VLC Medialibrary selection</string>
@@ -676,6 +678,7 @@
     <string name="video_save_clone_mode">Automatically activate clone mode?</string>
     <string name="video_remote_enable">Switch to remote control mode</string>
     <string name="video_remote_disable">Duplicate screen</string>
+    <string name="removed_from_playlist_anonymous">Item(s) removed from playlist</string>
     <string name="welcome_title">Welcome to VLC!</string>
     <string name="welcome_subtitle">The free and open source multimedia player</string>
     <string name="permission_media">VLC needs your permission to access media on your device</string>
@@ -689,5 +692,8 @@
     <string name="onboarding_scan_customize">Let me choose which folders VLC will scan</string>
     <string name="button_medialibrary_preferences">Go to Medialibrary preferences</string>
     <string name="light_theme">Light theme</string>
+    <string name="add">Add</string>
+    <string name="add_to_new_playlist">Add to new playlist</string>
     <string name="theme_follow_system_mode">Follow system mode</string>
+    <string name="resume_card_message">Resume playback of %1$s?</string>
 </resources>

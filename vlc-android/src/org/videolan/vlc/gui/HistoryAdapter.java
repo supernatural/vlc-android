@@ -63,13 +63,16 @@ public class HistoryAdapter extends DiffUtilAdapter<MediaWrapper, HistoryAdapter
             return mEventsHandler.onLongClick(v, position, getItem(position));
         }
 
+        public void onImageClick(View v) {
+            int position = getLayoutPosition();
+            mEventsHandler.onImageClick(v, position, getItem(position));
+        }
+
         @Override
         protected boolean isSelected() {
             return getItem(getLayoutPosition()).hasStateFlags(MediaLibraryItem.FLAG_SELECTED);
         }
     }
-
-
 
     List<MediaWrapper> getSelection() {
         final List<MediaWrapper> selection = new LinkedList<>();
@@ -115,5 +118,7 @@ public class HistoryAdapter extends DiffUtilAdapter<MediaWrapper, HistoryAdapter
     }
 
     @Override
-    protected void onUpdateFinished() {}
+    protected void onUpdateFinished() {
+        mEventsHandler.onUpdateFinished(this);
+    }
 }

@@ -269,6 +269,13 @@ AndroidMediaLibrary::searchFromPLaylist( int64_t playlistId, const std::string& 
     return playlist == nullptr ? nullptr : playlist->searchMedia(query, params);
 }
 
+medialibrary::Query<medialibrary::IMedia>
+AndroidMediaLibrary::searchFromFolder( int64_t folderId, const std::string& query, medialibrary::IMedia::Type type, const medialibrary::QueryParameters* params )
+{
+    auto folder = p_ml->folder(folderId);
+    return folder == nullptr ? nullptr : folder->searchMedia(query, type, params);
+}
+
 medialibrary::Query<medialibrary::IPlaylist>
 AndroidMediaLibrary::searchPlaylists(const std::string& query, const medialibrary::QueryParameters* params)
 {
@@ -309,6 +316,13 @@ medialibrary::MediaPtr
 AndroidMediaLibrary::addMedia(const std::string& mrl)
 {
     return p_ml->addExternalMedia(mrl);
+}
+
+bool
+AndroidMediaLibrary::removeExternalMedia(long id)
+{
+    auto media = p_ml->media(id);
+    return media != nullptr && p_ml->removeExternalMedia(media);
 }
 
 medialibrary::MediaPtr
@@ -447,15 +461,15 @@ AndroidMediaLibrary::playlistAdd(int64_t playlistId, int64_t mediaId, unsigned i
 }
 
 bool
-AndroidMediaLibrary::playlistMove(int64_t playlistId, int64_t mediaId, unsigned int position) {
+AndroidMediaLibrary::playlistMove(int64_t playlistId, unsigned int oldPosition, unsigned int newPosition) {
     medialibrary::PlaylistPtr playlist = p_ml->playlist(playlistId);
-    return playlist == nullptr ? false : playlist->move(mediaId, position);
+    return playlist == nullptr ? false : playlist->move(oldPosition, newPosition);
 }
 
 bool
-AndroidMediaLibrary::playlistRemove(int64_t playlistId, int64_t mediaId) {
+AndroidMediaLibrary::playlistRemove(int64_t playlistId, unsigned int position) {
     medialibrary::PlaylistPtr playlist = p_ml->playlist(playlistId);
-    return playlist == nullptr ? false : playlist->remove(mediaId);
+    return playlist == nullptr ? false : playlist->remove(position);
 }
 
 bool

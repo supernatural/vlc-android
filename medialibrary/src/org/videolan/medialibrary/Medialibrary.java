@@ -223,6 +223,11 @@ public class Medialibrary {
     }
 
     @WorkerThread
+    public MediaWrapper[] getPagedVideos(int sort, boolean desc, int nbItems, int offset) {
+        return mIsInitiated ? nativeGetSortedPagedVideos(sort, desc, nbItems, offset) : new MediaWrapper[0];
+    }
+
+    @WorkerThread
     public MediaWrapper[] getVideos(int sort, boolean desc) {
         return mIsInitiated ? nativeGetSortedVideos(sort, desc) : new MediaWrapper[0];
     }
@@ -385,7 +390,7 @@ public class Medialibrary {
     }
 
     public void reload() {
-        if (mIsInitiated && !isWorking()) nativeReload();
+        if (mIsInitiated) nativeReload();
     }
 
     public void reload(String entryPoint) {
@@ -442,6 +447,10 @@ public class Medialibrary {
     public MediaWrapper addMedia(String mrl) {
         final String vlcMrl = Tools.encodeVLCMrl(mrl);
         return mIsInitiated && !TextUtils.isEmpty(vlcMrl) ? nativeAddMedia(vlcMrl) : null;
+    }
+
+    public boolean removeExternalMedia(long id) {
+        return mIsInitiated && nativeRemoveExternalMedia(id);
     }
 
     @Nullable
@@ -969,6 +978,7 @@ public class Medialibrary {
     private native MediaWrapper nativeGetMedia(long id);
     private native MediaWrapper nativeGetMediaFromMrl(String mrl);
     private native MediaWrapper nativeAddMedia(String mrl);
+    private native boolean nativeRemoveExternalMedia(long id);
     private native MediaWrapper nativeAddStream(String mrl, String title);
     private native MediaWrapper[] nativeGetVideos();
     private native MediaWrapper[] nativeGetSortedVideos(int sort, boolean desc);
@@ -976,6 +986,7 @@ public class Medialibrary {
     private native MediaWrapper[] nativeGetAudio();
     private native MediaWrapper[] nativeGetSortedAudio(int sort, boolean desc);
     private native MediaWrapper[] nativeGetSortedPagedAudio(int sort, boolean desc, int nbItems, int offset);
+    private native MediaWrapper[] nativeGetSortedPagedVideos(int sort, boolean desc, int nbItems, int offset);
     private native MediaWrapper[] nativeGetRecentAudio();
     private native int nativeGetVideoCount();
     private native int nativeGetAudioCount();

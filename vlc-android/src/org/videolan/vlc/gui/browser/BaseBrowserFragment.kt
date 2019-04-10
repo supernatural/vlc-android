@@ -435,6 +435,7 @@ abstract class BaseBrowserFragment : MediaBrowserFragment<BrowserModel>(), IRefr
         }
     }
 
+
     override fun onCtxAction(position: Int, option: Int) {
         if (adapter.getItem(position) !is MediaWrapper) return
         val mw = adapter.getItem(position) as MediaWrapper
@@ -455,6 +456,14 @@ abstract class BaseBrowserFragment : MediaBrowserFragment<BrowserModel>(), IRefr
             CTX_DOWNLOAD_SUBTITLES -> MediaUtils.getSubs(requireActivity(), mw)
             CTX_FAV_REMOVE -> coroutineScope.launch(Dispatchers.IO) { browserFavRepository.deleteBrowserFav(mw.uri) }
         }
+    }
+
+    override fun onImageClick(v: View, position: Int, item: MediaLibraryItem) {
+        if (mActionMode != null) {
+            onClick(v, position, item)
+            return
+        }
+        onLongClick(v, position, item)
     }
 
     override fun onUpdateFinished(adapter: RecyclerView.Adapter<*>) {

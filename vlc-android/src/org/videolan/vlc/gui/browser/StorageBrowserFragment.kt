@@ -193,6 +193,7 @@ class StorageBrowserFragment : FileBrowserFragment(), EntryPointsEventsCb, Corou
         }
     }
 
+
     internal fun processEvent(cbp: CheckBox, mrl: String) {
         cbp.isEnabled = false
         mProcessingFolders.put(mrl, cbp)
